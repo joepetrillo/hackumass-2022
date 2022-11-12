@@ -1,4 +1,3 @@
-import { Dropdown, Navbar } from "flowbite-react";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
@@ -6,17 +5,14 @@ import type {
 } from "next";
 
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import authenticateUserServerSide from "../server/common/authenticateUserServerSide";
 import { trpc } from "../utils/trpc";
-import { useSession } from "next-auth/react";
-// import { useState } from "react";
 
 const Home: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = () => {
-  const { data: session } = useSession();
+  const { data } = trpc.groups.getGroupsByUserId.useQuery();
+  console.log(data);
 
   return (
     <>
@@ -26,52 +22,7 @@ const Home: NextPage<
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar
-        fluid={true}
-        rounded={true}
-        className="mx-auto max-w-screen-md px-10 py-10"
-      >
-        <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
-            HackUmass
-          </span>
-        </Navbar.Brand>
-        <div className="flex md:order-2">
-          <Dropdown
-            arrowIcon={false}
-            inline={true}
-            label={
-              <Image
-                alt="avatar"
-                src={session?.user?.image ?? ""}
-                width={55}
-                height={55}
-                className="rounded-full"
-              ></Image>
-            }
-          >
-            <Dropdown.Header>
-              <span className="block text-sm">{session?.user?.name}</span>
-              <span className="block truncate text-sm font-medium">
-                {session?.user?.email}
-              </span>
-            </Dropdown.Header>
-            <Link
-              href="/settings"
-              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Settings
-            </Link>
-            <Dropdown.Divider />
-            <Link
-              href="/api/auth/signout"
-              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Sign Out
-            </Link>
-          </Dropdown>
-        </div>
-      </Navbar>
+      <p>Hello World!</p>
     </>
   );
 };

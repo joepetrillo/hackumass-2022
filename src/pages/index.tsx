@@ -6,9 +6,9 @@ import type {
 import { Dropdown, Navbar } from "flowbite-react";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import authenticateUserServerSide from "../server/common/authenticateUserServerSide";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 
 const Home: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -23,9 +23,13 @@ const Home: NextPage<
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar fluid={true} rounded={true}>
+      <Navbar
+        fluid={true}
+        rounded={true}
+        className="mx-auto max-w-screen-md px-10 py-10"
+      >
         <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
             HackUmass
           </span>
         </Navbar.Brand>
@@ -37,8 +41,8 @@ const Home: NextPage<
               <Image
                 alt="avatar"
                 src={session?.user?.image ?? ""}
-                width={60}
-                height={60}
+                width={55}
+                height={55}
                 className="rounded-full"
               ></Image>
             }
@@ -49,17 +53,19 @@ const Home: NextPage<
                 {session?.user?.email}
               </span>
             </Dropdown.Header>
-            <Dropdown.Item>
-              <Link href="/settings" className="w-full">
-                Settings
-              </Link>
-            </Dropdown.Item>
+            <Link
+              href="/settings"
+              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              Settings
+            </Link>
             <Dropdown.Divider />
-            <Dropdown.Item>
-              <Link href="/api/auth/signout" className="w-full">
-                Sign Out
-              </Link>
-            </Dropdown.Item>
+            <Link
+              href="/api/auth/signout"
+              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              Sign Out
+            </Link>
           </Dropdown>
         </div>
       </Navbar>

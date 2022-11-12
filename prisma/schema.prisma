@@ -49,6 +49,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Member        Member[]
 }
 
 model VerificationToken {
@@ -57,4 +58,48 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Group {
+  id            String         @id @default(cuid())
+  name          String
+  description   String
+  createdAt     DateTime       @default(now())
+  GroupSessions GroupSession[]
+  Members       Member[]
+}
+
+model Member {
+  userId  String
+  groupId String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Group   Group  @relation(fields: [groupId], references: [id])
+
+  @@id([userId, groupId])
+}
+
+model GroupSession {
+  id        String     @id @default(cuid())
+  groupId   String
+  expired   Boolean
+  name      String
+  createdAt DateTime   @default(now())
+  Questions Question[]
+  Group     Group      @relation(fields: [groupId], references: [id])
+}
+
+model Question {
+  id             String       @id @default(cuid())
+  numOptions     Int
+  correct        String
+  groupSessionId String
+  GroupSession   GroupSession @relation(fields: [groupSessionId], references: [id])
+}
+
+model Response {
+  id         String  @id @default(cuid())
+  userId     String
+  questionId String
+  response   String
+  isCorrect  Boolean
 }

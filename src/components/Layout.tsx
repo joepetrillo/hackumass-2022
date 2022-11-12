@@ -19,39 +19,41 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
-          <Dropdown
-            arrowIcon={false}
-            inline={true}
-            label={
-              <Image
-                alt="avatar"
-                src={session?.user?.image ?? ""}
-                width={55}
-                height={55}
-                className="rounded-full"
-              ></Image>
-            }
-          >
-            <Dropdown.Header>
-              <span className="block text-sm">{session?.user?.name}</span>
-              <span className="block truncate text-sm font-medium">
-                {session?.user?.email}
-              </span>
-            </Dropdown.Header>
-            <Link
-              href="/settings"
-              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+          {session?.user && (
+            <Dropdown
+              arrowIcon={false}
+              inline={true}
+              label={
+                <Image
+                  alt="avatar"
+                  src={session?.user?.image ?? ""}
+                  width={55}
+                  height={55}
+                  className="rounded-full"
+                ></Image>
+              }
             >
-              Settings
-            </Link>
-            <Dropdown.Divider />
-            <Link
-              href="/api/auth/signout"
-              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Sign Out
-            </Link>
-          </Dropdown>
+              <Dropdown.Header>
+                <span className="block text-sm">{session?.user?.name}</span>
+                <span className="block truncate text-sm font-medium">
+                  {session?.user?.email}
+                </span>
+              </Dropdown.Header>
+              <Link
+                href="/settings"
+                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Settings
+              </Link>
+              <Dropdown.Divider />
+              <Link
+                href="/api/auth/signout"
+                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Sign Out
+              </Link>
+            </Dropdown>
+          )}
         </div>
       </Navbar>
       {children}

@@ -11,14 +11,12 @@ import Link from "next/link";
 import authenticateUserServerSide from "../server/common/authenticateUserServerSide";
 import { trpc } from "../utils/trpc";
 import { useSession } from "next-auth/react";
+// import { useState } from "react";
 
 const Home: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = () => {
   const { data: session } = useSession();
-
-  const { data } = trpc.groups.getGroupsByUserId.useQuery();
-  console.log(data);
 
   return (
     <>

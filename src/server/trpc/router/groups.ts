@@ -4,7 +4,6 @@ import { z } from "zod";
 export const groupsRouter = router({
   getGroupsByUserId: protectedProcedure.query(async ({ ctx }) => {
     const sessionUserId: string = ctx?.session?.user?.id;
-
     const userGroups = await ctx.prisma.member
       .findMany({
         where: {
@@ -26,7 +25,6 @@ export const groupsRouter = router({
 
     return { ownedGroups: ownedGroups, joinedGroups: joinedGroups };
   }),
-
   createGroup: protectedProcedure
     .input(z.object({ name: z.string(), description: z.string() }))
     .mutation(async ({ input, ctx }) => {

@@ -63,7 +63,7 @@ model VerificationToken {
 
 model Group {
   id            String         @id @default(cuid())
-  ownerId       String
+  ownerId       String         
   name          String
   description   String
   createdAt     DateTime       @default(now())

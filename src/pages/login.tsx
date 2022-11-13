@@ -1,13 +1,5 @@
-import { Dropdown, Navbar } from "flowbite-react";
 import { useEffect } from "react";
-import type {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  NextPage,
-} from "next";
-
 import Head from "next/head";
-import { trpc } from "../utils/trpc";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -16,10 +8,10 @@ const Login = () => {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "authenticated" && session) {
       router.push("/");
     }
-  }, [session]);
+  }, [session, router, status]);
 
   return (
     <>
@@ -29,7 +21,7 @@ const Login = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {status !== "loading" && status !== "authenticated" && (
-        <div className="flex w-screen flex-col items-center">
+        <div className="flex flex-col items-center">
           <h1 className="text-4xl text-black">Login</h1>
           <button
             onClick={() => signIn("github")}

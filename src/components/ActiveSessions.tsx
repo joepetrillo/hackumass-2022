@@ -17,7 +17,7 @@ const ActiveSessions = ({ groupId }: { groupId: string }) => {
   }
 
   const SessionList = data.map((s) => (
-    <Card key={s.groupId}>
+    <Card key={s.id}>
       <div className="flex h-full flex-col justify-start gap-4 p-6">
         <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
           {s.name}

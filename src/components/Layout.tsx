@@ -13,11 +13,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         rounded={true}
         className="mx-auto max-w-screen-md !px-6 !py-6"
       >
-        <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
+        <Link href="/">
+          <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white">
             HackUmass
           </span>
-        </Navbar.Brand>
+        </Link>
         <div className="flex md:order-2">
           {session?.user && (
             <Dropdown

@@ -65,7 +65,7 @@ export const groupsRouter = router({
         });
       }
 
-      const relation = ctx.prisma.member.findFirst({
+      const relation = await ctx.prisma.member.findFirst({
         where: {
           groupId: input.groupId,
           userId: ctx.session.user.id,
@@ -75,7 +75,7 @@ export const groupsRouter = router({
       if (relation === null) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
-          message: `User with id ${ctx.session.user.id} is not in group with id ${input.groupId}`,
+          message: `You have not joined this group. Add yourself using a provided access code.`,
         });
       }
 
@@ -83,6 +83,19 @@ export const groupsRouter = router({
 
       if (group.ownerId === ctx.session.user.id) isOwner = true;
 
-      return { groupData: group, isOwner: isOwner };
+      const owner = await ctx.prisma.user.findFirst({
+        where: {
+          id: group.ownerId,
+        },
+      });
+
+      if (owner === null || owner.name === null) {
+        return { error: `Owner does not exist.` };
+      }
+
+      return {
+        groupData: { ...group, ownerName: owner.name },
+        isOwner: isOwner,
+      };
     }),
 });

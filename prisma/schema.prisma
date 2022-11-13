@@ -50,6 +50,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Member        Member[]
+  Group         Group[]
 }
 
 model VerificationToken {
@@ -62,11 +63,14 @@ model VerificationToken {
 
 model Group {
   id            String         @id @default(cuid())
+  ownerId       String         
   name          String
   description   String
   createdAt     DateTime       @default(now())
   GroupSessions GroupSession[]
   Members       Member[]
+  user          User           @relation(fields: [ownerId], references: [id])
+  accessCode    String         @default(cuid())
 }
 
 model Member {

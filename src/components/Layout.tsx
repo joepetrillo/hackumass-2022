@@ -11,7 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Navbar
         fluid={true}
         rounded={true}
-        className="mx-auto max-w-screen-md !px-10 !py-10"
+        className="mx-auto max-w-screen-md !px-6 !py-6"
       >
         <Navbar.Brand href="/">
           <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
@@ -56,7 +56,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           )}
         </div>
       </Navbar>
-      {children}
+      <main className="mx-auto max-w-screen-md p-6">{children}</main>
       <Footer>
         <div className="mx-auto w-full max-w-screen-md">
           <div className="grid w-full grid-cols-2 gap-8 py-8 px-6 md:grid-cols-3">

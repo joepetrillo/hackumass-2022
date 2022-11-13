@@ -14,6 +14,7 @@ import { trpc } from "../utils/trpc";
 const Home: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = () => {
+
   const { isLoading, isError, data } = trpc.groups.getGroupsByUserId.useQuery();
   const [createIsOpen, setCreateIsOpen] = useState(false);
   const [joinIsOpen, setJoinIsOpen] = useState(false);

@@ -87,6 +87,7 @@ model GroupSession {
   groupId   String
   expired   Boolean
   name      String
+  accessCode String
   createdAt DateTime   @default(now())
   Questions Question[]
   Group     Group      @relation(fields: [groupId], references: [id])

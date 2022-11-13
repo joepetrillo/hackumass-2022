@@ -11,7 +11,23 @@ export const questionsRouter = router({
           groupSessionId: input.sessionId,
         },
       });
-      // TODO: double check return shape/value
+
       return sessionQuestions;
+    }),
+
+  getQuestionsByQuestionId: protectedProcedure
+    .input(z.object({ questionId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const question = await ctx.prisma.question.findFirst({
+        where: {
+          id: input.questionId,
+        },
+      });
+
+      if (question === null) {
+        return { error: `Question with id ${input.questionId} does not exist` };
+      }
+
+      return question.numOptions;
     }),
 });

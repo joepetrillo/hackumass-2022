@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: '/login'
-  }
+  },
   theme: {
     colorScheme: "light",
   },

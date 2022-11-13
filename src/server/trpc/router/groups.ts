@@ -4,17 +4,26 @@ import { z } from "zod";
 export const groupsRouter = router({
   getGroupsByUserId: protectedProcedure.query(async ({ ctx }) => {
     const sessionUserId: string = ctx?.session?.user?.id;
+    const userGroups = await ctx.prisma.member
+      .findMany({
+        where: {
+          userId: sessionUserId,
+        },
+        select: {
+          Group: true,
+        },
+      })
+      .then((data) => data.map((group) => group.Group));
 
-    const userGroups = await ctx.prisma.member.findMany({
-      where: {
-        userId: sessionUserId,
-      },
-      select: {
-        Group: true,
-      },
-    });
-    // TODO: double check return shape/value
-    return userGroups;
+    const ownedGroups = userGroups.filter(
+      (cur) => cur.ownerId === sessionUserId
+    );
+
+    const joinedGroups = userGroups.filter(
+      (cur) => cur.ownerId !== sessionUserId
+    );
+
+    return { ownedGroups: ownedGroups, joinedGroups: joinedGroups };
   }),
   createGroup: protectedProcedure
     .input(z.object({ name: z.string(), description: z.string() }))

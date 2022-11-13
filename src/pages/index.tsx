@@ -4,12 +4,14 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
-import Head from "next/head";
-import { useState } from "react";
+
 import CreateGroupModal from "../components/CreateGroupModal";
 import GroupCard from "../components/GroupCard";
+import Head from "next/head";
+import JoinGroupModal from "../components/JoinGroupModal";
 import authenticateUserServerSide from "../server/common/authenticateUserServerSide";
 import { trpc } from "../utils/trpc";
+import { useState } from "react";
 
 const Home: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -68,6 +70,10 @@ const Home: NextPage<
             <Button onClick={() => setJoinIsOpen(!joinIsOpen)} size="sm">
               Join Group
             </Button>
+            <JoinGroupModal
+              show={joinIsOpen}
+              onClose={() => setJoinIsOpen(!joinIsOpen)}
+            />
           </div>
           <hr />
           <div className="py-6">

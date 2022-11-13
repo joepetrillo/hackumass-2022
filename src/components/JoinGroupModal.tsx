@@ -1,11 +1,4 @@
-import {
-  Button,
-  Label,
-  Modal,
-  Spinner,
-  Textarea,
-  TextInput,
-} from "flowbite-react";
+import { Button, Label, Modal, Spinner, TextInput } from "flowbite-react";
 import { type FormEvent, useState } from "react";
 import { trpc } from "../utils/trpc";
 
@@ -16,16 +9,16 @@ const CreateGroupModal = ({
   show: boolean;
   onClose: () => void;
 }) => {
-  const defaultForm = { name: "", description: "" };
+  const defaultForm = { accessCode: "" };
   const [formData, setFormData] = useState({ ...defaultForm });
   const [error, setError] = useState("");
 
-  //   const joinGroupMutation = trpc.groups.
+  const joinGroupMutation = trpc.members.createMemberRelation.useMutation();
   const utils = trpc.useContext();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     const trigger = async () => {
-      //   await createGroupMutation.mutateAsync(formData);
+      await joinGroupMutation.mutateAsync(formData);
     };
     const cleanup = async () => {
       setFormData({ ...defaultForm });
@@ -34,11 +27,11 @@ const CreateGroupModal = ({
     };
     e.preventDefault();
     await trigger();
-    // if (createGroupMutation.isError) {
-    //   setError(createGroupMutation.error.message);
-    // } else {
-    //   cleanup();
-    // }
+    if (joinGroupMutation.isError) {
+      setError(joinGroupMutation.error.message);
+    } else {
+      cleanup();
+    }
   }
 
   return (
@@ -62,22 +55,22 @@ const CreateGroupModal = ({
               placeholder="My Group"
               required={true}
               onChange={(e) =>
-                setFormData({ ...formData, name: e.currentTarget.value })
+                setFormData({ ...formData, accessCode: e.target.value })
               }
-              value={formData.name}
-              //   disabled={createGroupMutation.isLoading}
+              value={formData.accessCode}
+              disabled={joinGroupMutation.isLoading}
             />
           </div>
           <Button
             type="submit"
             className="w-full"
-            // disabled={createGroupMutation.isLoading}
+            disabled={joinGroupMutation.isLoading}
           >
-            {/* {createGroupMutation.isLoading && (
+            {joinGroupMutation.isLoading && (
               <div className="mr-3">
                 <Spinner size="sm" light={true} />
               </div>
-            )} */}
+            )}
             Join Group
           </Button>
         </form>

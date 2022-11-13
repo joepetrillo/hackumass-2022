@@ -70,6 +70,7 @@ model Group {
   GroupSessions GroupSession[]
   Members       Member[]
   user          User           @relation(fields: [ownerId], references: [id])
+  accessCode    String         @default(cuid())
 }
 
 model Member {
@@ -86,6 +87,7 @@ model GroupSession {
   groupId   String
   expired   Boolean
   name      String
+  accessCode String
   createdAt DateTime   @default(now())
   Questions Question[]
   Group     Group      @relation(fields: [groupId], references: [id])

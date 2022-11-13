@@ -4,6 +4,7 @@ import { groupsRouter } from "./groups";
 import { questionsRouter } from "./questions";
 import { responsesRouter } from "./responses";
 import { router } from "../trpc";
+import { membersRouter } from "./members";
 
 export const appRouter = router({
   auth: authRouter,
@@ -11,6 +12,7 @@ export const appRouter = router({
   groupSessions: groupSessionsRouter,
   questions: questionsRouter,
   responses: responsesRouter,
+  members: membersRouter,
 });
 
 // export type definition of API

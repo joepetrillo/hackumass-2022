@@ -1,5 +1,6 @@
 import { protectedProcedure, router } from "../trpc";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
 export const groupsRouter = router({
   createGroup: protectedProcedure
@@ -47,4 +48,41 @@ export const groupsRouter = router({
 
     return { ownedGroups: ownedGroups, joinedGroups: joinedGroups };
   }),
+
+  getGroupByGroupId: protectedProcedure
+    .input(z.object({ groupId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const group = await ctx.prisma.group.findFirst({
+        where: {
+          id: input.groupId,
+        },
+      });
+
+      if (group === null) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `Group with id ${input.groupId} does not exist`,
+        });
+      }
+
+      const relation = ctx.prisma.member.findFirst({
+        where: {
+          groupId: input.groupId,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (relation === null) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: `User with id ${ctx.session.user.id} is not in group with id ${input.groupId}`,
+        });
+      }
+
+      let isOwner = false;
+
+      if (group.ownerId === ctx.session.user.id) isOwner = true;
+
+      return { groupData: group, isOwner: isOwner };
+    }),
 });
